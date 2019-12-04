@@ -1,0 +1,51 @@
+﻿
+@model IEnumerable<MVC.Models.Seguir>
+
+@{
+	ViewBag.Title = "Seguidores";
+}
+
+<h2>@HttpContext.Current.User.Identity.Name</h2>
+
+<div align="center">
+	@if (Model.Any())
+	{
+		int a = 0;
+		foreach (var item in Model)
+		{
+			if (item.seguido == HttpContext.Current.User.Identity.Name)
+			{
+				a = a + 1;
+			}
+		}
+		<h2>Seguidores: @a</h2>
+	}
+</div>
+
+
+@if (Model.Any())
+{
+	<div align="center">
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Seguidores</th>
+					<th></th>
+				</tr>
+				@foreach (var item in Model)
+				{
+					if (item.seguido == HttpContext.Current.User.Identity.Name)
+					{
+					<tr>
+						<td>@item.seguidor</td>
+						<td> @Html.ActionLink("Perfil", "Perfil1", new { i = item.seguidor })</td>
+					</tr>
+					}
+				}
+			</table>
+	</div>
+}
+else
+{
+	<h3>No hay elementos para mostrar</h3>
+}
+

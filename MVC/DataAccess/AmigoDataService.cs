@@ -35,17 +35,21 @@ namespace MVC.DataAccess
                         {
                             idamigo = Convert.ToInt32(dataReader["idamigo"].ToString()),
                             nombre = dataReader["nombre"].ToString(),
-                            fecnac = Convert.ToDateTime(dataReader["fecnac"].ToString()),
-                            direccion = dataReader["direccion"].ToString(),
-                            telefono = dataReader["telefono"].ToString()
+                            telefono = dataReader["telefono"].ToString(),
+                            usuario = dataReader["usuario"].ToString(),
+                            seguidores = dataReader["seguidores"].ToString(),
+                            seguidos = dataReader["seguidos"].ToString(),
+                            publicaciones = dataReader["publicaciones"].ToString(),
+                            frase = dataReader["frase"].ToString(),
+                            foto = dataReader["foto"].ToString()
                         };
                         result.Add(amigo);
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
-                // ignored
+                string a = ex.Message;
             }
             finally
             {
@@ -69,28 +73,28 @@ namespace MVC.DataAccess
                         CommandType = CommandType.StoredProcedure
                     };
 
-                    var par1 = new SqlParameter("@nombre", SqlDbType.NVarChar)
+                    var par1 = new SqlParameter("@telefono", SqlDbType.NVarChar)
+                    {
+                        Direction = ParameterDirection.Input,
+                        Value = amigo.telefono
+                    };
+
+                    var par2 = new SqlParameter("@nombre", SqlDbType.NVarChar)
                     {
                         Direction = ParameterDirection.Input,
                         Value = amigo.nombre
                     };
 
-                    var par2 = new SqlParameter("@fecnac", SqlDbType.DateTime)
+                    var par3 = new SqlParameter("@usuario", SqlDbType.NVarChar)
                     {
                         Direction = ParameterDirection.Input,
-                        Value = amigo.fecnac
+                        Value = amigo.usuario
                     };
 
-                    var par3 = new SqlParameter("@direccion", SqlDbType.NVarChar)
+                    var par4 = new SqlParameter("@contrasena", SqlDbType.NVarChar)
                     {
                         Direction = ParameterDirection.Input,
-                        Value = amigo.direccion
-                    };
-
-                    var par4 = new SqlParameter("@telefono", SqlDbType.NVarChar)
-                    {
-                        Direction = ParameterDirection.Input,
-                        Value = amigo.telefono
+                        Value = amigo.contrasena
                     };
 
                     var par5 = new SqlParameter("@haserror", SqlDbType.Bit)
@@ -123,7 +127,7 @@ namespace MVC.DataAccess
             return result;
         }
 
-        public bool DeleteAmigo(int idamigo)
+        public bool DeleteSeguido(int idseguido)
         {
             var result = false;
             try
@@ -133,14 +137,14 @@ namespace MVC.DataAccess
                     var command = new SqlCommand
                     {
                         Connection = _client.Conecction,
-                        CommandText = "deleteamigo",
+                        CommandText = "deleteseguido",
                         CommandType = CommandType.StoredProcedure
                     };
 
-                    var par1 = new SqlParameter("@idamigo", SqlDbType.Int)
+                    var par1 = new SqlParameter("@id", SqlDbType.Int)
                     {
                         Direction = ParameterDirection.Input,
-                        Value = idamigo
+                        Value = idseguido
                     };
 
                     var par5 = new SqlParameter("@haserror", SqlDbType.Bit)
@@ -184,28 +188,17 @@ namespace MVC.DataAccess
                         CommandType = CommandType.StoredProcedure
                     };
 
-                    var par1 = new SqlParameter("@idamigo", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Input,
-                        Value = amigo.idamigo
-                    };
-
                     var par2 = new SqlParameter("@nombre", SqlDbType.NVarChar)
                     {
                         Direction = ParameterDirection.Input,
                         Value = amigo.nombre
                     };
 
-                    var par3 = new SqlParameter("@fecnac", SqlDbType.DateTime)
-                    {
-                        Direction = ParameterDirection.Input,
-                        Value = amigo.fecnac
-                    };
 
-                    var par4 = new SqlParameter("@direccion", SqlDbType.NVarChar)
+                    var par3 = new SqlParameter("@contrasena", SqlDbType.NVarChar)
                     {
                         Direction = ParameterDirection.Input,
-                        Value = amigo.direccion
+                        Value = amigo.contrasena
                     };
 
                     var par5 = new SqlParameter("@telefono", SqlDbType.NVarChar)
@@ -214,26 +207,38 @@ namespace MVC.DataAccess
                         Value = amigo.telefono
                     };
 
-                    var par6 = new SqlParameter("@haserror", SqlDbType.Bit)
+                    var par6 = new SqlParameter("@usuario", SqlDbType.NVarChar)
+                    {
+                        Direction = ParameterDirection.Input,
+                        Value = amigo.usuario
+                    };
+
+                    var par10 = new SqlParameter("@frase", SqlDbType.NVarChar)
+                    {
+                        Direction = ParameterDirection.Input,
+                        Value = amigo.frase
+                    };
+
+                    var par11 = new SqlParameter("@haserror", SqlDbType.Bit)
                     {
                         Direction = ParameterDirection.Output
                     };
 
-                    command.Parameters.Add(par1);
                     command.Parameters.Add(par2);
                     command.Parameters.Add(par3);
-                    command.Parameters.Add(par4);
                     command.Parameters.Add(par5);
                     command.Parameters.Add(par6);
+                    command.Parameters.Add(par10);
+                    command.Parameters.Add(par11);
 
                     command.ExecuteNonQuery();
 
                     result = !Convert.ToBoolean(command.Parameters["@haserror"].Value.ToString());
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                result = false;
+                string a = ex.Message;
             }
             finally
             {
@@ -242,6 +247,122 @@ namespace MVC.DataAccess
 
             return result;
         }
-           
+
+        public List<Seguir> GetSeguidor()
+        {
+            var result = new List<Seguir>();
+            try
+            {
+                if (_client.Open())
+                {
+                    var command = new SqlCommand
+                    {
+                        Connection = _client.Conecction,
+                        CommandText = "getseguidor",
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var seguir = new Seguir
+                        {
+                            id = Convert.ToInt32(dataReader["id"].ToString()),
+                            seguidor = dataReader["seguidor"].ToString(),
+                            seguido = dataReader["seguido"].ToString()
+                        };
+                        result.Add(seguir);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+            }
+            finally
+            {
+                _client.Close();
+            }
+
+            return result;
+        }
+
+        public List<Publicaciones> GetPubli()
+        {
+            var result = new List<Publicaciones>();
+            try
+            {
+                if (_client.Open())
+                {
+                    var command = new SqlCommand
+                    {
+                        Connection = _client.Conecction,
+                        CommandText = "getpubli",
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var publi = new Publicaciones
+                        {
+                            id = Convert.ToInt32(dataReader["id"].ToString()),
+                            descripcion = dataReader["descripcion"].ToString(),
+                            likes = dataReader["likes"].ToString(),
+                            idusuario = dataReader["idusuario"].ToString(),
+                            foto = dataReader["foto"].ToString()
+                        };
+                        result.Add(publi);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+            }
+            finally
+            {
+                _client.Close();
+            }
+
+            return result;
+        }
+
+        public List<Historia> GetHistoria()
+        {
+            var result = new List<Historia>();
+            try
+            {
+                if (_client.Open())
+                {
+                    var command = new SqlCommand
+                    {
+                        Connection = _client.Conecction,
+                        CommandText = "gethistorias",
+                        CommandType = CommandType.StoredProcedure
+                    };
+                    var dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        var historia = new Historia
+                        {
+                            id = Convert.ToInt32(dataReader["id"].ToString()),
+                            foto = dataReader["foto"].ToString(),
+                            usuario = dataReader["usuario"].ToString()
+                        };
+                        result.Add(historia);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+            }
+            finally
+            {
+                _client.Close();
+            }
+
+            return result;
+        }
+
     }
 }

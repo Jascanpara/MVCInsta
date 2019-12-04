@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MVC.Models.Publicaciones>
+
+@{
+	ViewBag.Title = "Publicaciones";
+}
+
+<h2>Publicaciones</h2>
+
+@if (Model.Any())
+{
+	<div class="container">
+		<br />
+		<div style="width:90%; margin:0 auto;">
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Foto</th>
+					<th>Descripcion</th>
+					<th>Likes</th>
+					<th>Usuario</th>
+					<th></th>
+				</tr>
+				@foreach (var item in Model)
+				{
+			<tr>
+				<td><img src="@item.foto" alt="Imagen" height=100 width=200></td>
+				<td>@item.descripcion</td>
+				<td>@item.likes</td>
+				<td>@item.idusuario</td>
+				<td> @Html.ActionLink("Perfil", "Perfil1", new { i = item.idusuario })</td>
+			</tr>
+				}
+			</table>
+		</div>
+	</div>
+
+}
+else
+{
+	<h3>No hay elementos para mostrar</h3>
+}
+

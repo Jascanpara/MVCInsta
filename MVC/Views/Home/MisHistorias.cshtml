@@ -1,0 +1,23 @@
+﻿@model MVC.Models.Historia
+
+@{
+	ViewBag.Title = "MisHistorias";
+}
+
+<h2>Historias</h2>
+
+<h2>@Model.usuario</h2>
+
+<div class="container">
+	<br />
+	<div style="width:90%; margin:0 auto;">
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Foto</th>
+			</tr>
+			<tr>
+				<td><img src="@Model.foto" alt="Imagen" height=100 width=200></td>
+			</tr>
+		</table>
+	</div>
+</div>

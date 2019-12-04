@@ -1,0 +1,26 @@
+﻿@model MVC.Models.Amigo
+
+@{
+	ViewBag.Title = "Perfil";
+}
+
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+
+
+<h2>@ViewBag.Title</h2>
+
+<div align="center">
+	<h2>@HttpContext.Current.User.Identity.Name</h2>
+
+	<h3>@Html.ActionLink("Ver Perfil", "Perfil1", new { i = @HttpContext.Current.User.Identity.Name })</h3>
+
+	<h3>@Html.ActionLink("Editar Perfil", "UpdateVeiw", new { i = @HttpContext.Current.User.Identity.Name })</h3>
+
+	<h3>@Html.ActionLink("Publicaciones", "MisPublicaciones", new { i = @HttpContext.Current.User.Identity.Name })</h3>
+
+	<h3>@Html.ActionLink("Subir foto", "Publicar", new { i = @HttpContext.Current.User.Identity.Name })</h3>
+
+	<h3>@Html.ActionLink("Subir hitoria", "SubirHistoria", new { i = @HttpContext.Current.User.Identity.Name })</h3>
+
+</div>

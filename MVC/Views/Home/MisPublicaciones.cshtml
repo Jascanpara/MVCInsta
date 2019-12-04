@@ -1,0 +1,27 @@
+﻿@model MVC.Models.Publicaciones
+
+@{
+	ViewBag.Title = "MisPublicaciones";
+}
+
+<h2>@HttpContext.Current.User.Identity.Name</h2>
+
+<h2>MisPublicaciones</h2>
+
+	<div class="container">
+		<br />
+		<div style="width:90%; margin:0 auto;">
+			<table class="table table-striped table-bordered">
+				<tr>
+					<th>Foto</th>
+					<th>Descripcion</th>
+					<th>Likes</th>
+				</tr>
+					<tr>
+						<td><img src="@Model.foto" alt="Imagen" height=100 width=200></td>
+						<td>@Model.descripcion</td>
+						<td>@Model.likes</td>
+					</tr>
+			</table>
+		</div>
+	</div>

@@ -117,17 +117,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\ConversorPath.cs" />
+    <Compile Include="Adapters\IConversor.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataAccess\AmigoDataService.cs" />
     <Compile Include="DataAccess\SqlClient.cs" />
+    <Compile Include="Estados\MiPerfil.cs" />
+    <Compile Include="Estados\NoMiPerfil.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Amigo.cs" />
+    <Compile Include="Models\Control.cs" />
+    <Compile Include="Models\Historia.cs" />
+    <Compile Include="Models\IEstadoPerfil.cs" />
+    <Compile Include="Models\Path.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Publicaciones.cs" />
+    <Compile Include="Models\Seguir.cs" />
+    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Ventanilla.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startegy\ComprovarClass.cs" />
+    <Compile Include="Startegy\ComprovarNull.cs" />
+    <Compile Include="Startegy\IStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -167,6 +183,19 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\AddView.cshtml" />
     <Content Include="Views\Home\UpdateVeiw.cshtml" />
+    <Content Include="Views\Home\Perfil.cshtml" />
+    <Content Include="Views\Home\Notificaciones.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Registro.cshtml" />
+    <Content Include="Views\Home\Perfil1.cshtml" />
+    <Content Include="Views\Home\Seguidores.cshtml" />
+    <Content Include="Views\Home\Seguidos.cshtml" />
+    <Content Include="Views\Home\Publicaciones.cshtml" />
+    <Content Include="Views\Home\MisPublicaciones.cshtml" />
+    <Content Include="Views\Home\Publicar.cshtml" />
+    <Content Include="Views\Home\Historias.cshtml" />
+    <Content Include="Views\Home\MisHistorias.cshtml" />
+    <Content Include="Views\Home\SubirHistoria.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

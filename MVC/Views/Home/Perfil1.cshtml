@@ -1,0 +1,97 @@
+﻿@using MVC.Models
+@model MVC.Models.Amigo
+
+
+@{
+	ViewBag.Title = "Perfil1";
+}
+
+<h2>Perfil</h2>
+
+<div align="center">
+	<h2>@Html.DisplayName(Model.usuario)</h2>
+</div>
+
+<div align="center">
+	<table style="width:30%">
+		<tr>
+			<td>@Html.ActionLink("MisHistorias", "MisHistorias", new { i = Model.usuario })</td>
+		</tr>
+	</table>
+</div>
+
+@using (Html.BeginForm("Perfil", "Home"))
+{
+	@Html.AntiForgeryToken()
+<div align="center" class="form-group">
+		<p></p>
+		<p></p>
+		<h1>@Html.DisplayName(Model.foto)</h1>
+		<p></p>
+		<p>@Html.DisplayName(Model.nombre)</p>
+		<p></p>
+		<p>@Html.DisplayName(Model.frase)</p>
+		<p></p>
+</div>
+}
+
+@{
+	MVC.Models.Control banco = new MVC.Models.Control();
+	int a;
+	if (HttpContext.Current.User.Identity.Name == Model.usuario)
+	{
+		a = banco.abriVentanilla();
+
+	}
+	else
+	{
+		a = banco.cerraVentanilla();
+	}
+	if (a == 0)
+	{
+		<div align="right">
+			<button style="background-color:blue;" id="btnSeguir" class="btn btn-lg btn-success btn-block">Seguir</button>
+		</div>
+	}
+	else
+	{
+		<div align="center">
+			<table style="width:30%">
+				<tr>
+					<td>@Html.ActionLink("Publicaciones", "MisPublicaciones", new { i = Model.usuario })</td>
+					<td>@Html.ActionLink("Seguidores", "Seguidores", new { i = @HttpContext.Current.User.Identity.Name })</td>
+					<td>@Html.ActionLink("Seguidos", "Seguidos", new { i = @HttpContext.Current.User.Identity.Name })</td>
+				</tr>
+			</table>
+		</div>
+	}
+}
+@Scripts.Render("~/bundles/jquery")
+<script type="text/javascript">
+			$(document).ready(function () {
+				$("#btnSeguir").on("click", function () {
+					$.ajax({
+						contentType: "application/json; charset=utf-8",
+						type: "POST",
+						url: "@Url.Action("Seguir", "Home")",
+						data: JSON.stringify({ seguidor: '@HttpContext.Current.User.Identity.Name', seguido: '@Model.usuario' }),
+						success: function (data) {
+							if(data == 1)
+							{
+								var returnUrl = "@Request.QueryString["ReturnUrl"]";
+
+								if (returnUrl == "") {
+									window.location.href = "@Url.Action("Index","Home")";
+								}
+								else {
+									window.location.href = returnUrl;
+								}
+							}
+							else {
+								alert("Usted ya sigue a este usuario");
+							}
+						}
+					});
+				});
+			})
+</script>
